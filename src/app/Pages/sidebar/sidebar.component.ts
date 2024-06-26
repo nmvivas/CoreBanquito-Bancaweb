@@ -37,16 +37,18 @@ export class SidebarComponent implements OnInit {
   }
 
   setUserNameFromLocalStorage() {
-    const userJson = localStorage.getItem('user');
-    if (userJson) {
-      try {
-        const user = JSON.parse(userJson);
-        this.userName = user.fullName;
-      } catch (error) {
-        console.error('Error parsing JSON from localStorage', error);
+    if (typeof window !== 'undefined') {
+      const userJson = localStorage.getItem('user');
+      if (userJson) {
+        try {
+          const user = JSON.parse(userJson);
+          this.userName = user.fullName;
+        } catch (error) {
+          console.error('Error parsing JSON from localStorage', error);
+        }
+      } else {
+        console.error('No user found in localStorage');
       }
-    } else {
-      console.error('No user found in localStorage');
     }
   }
 

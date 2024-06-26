@@ -29,6 +29,7 @@ export class ServiceCheckComponent {
   comision: number = 0.40;
   iva: number = 0.15;
   idCompany: any = {} ;
+  number = '';
 
   constructor(private router: Router, private sharedDataService: SharedDataService, private dataSharingService: DataSharingService, private companyAccountsService: CompanyAccountsService ) {
     this.company = this.sharedDataService.getSharedData().company;
@@ -38,6 +39,7 @@ export class ServiceCheckComponent {
     this.identificacion = this.sharedDataService.getSharedData().identificacion;
     this.dueDate = this.sharedDataService.getSharedData().dueDate;
     this.idCompany = this.sharedDataService.getSharedData().idCompany;
+    this.number = this.dataSharingService.getAccountNumber();
   }
 
  
@@ -45,6 +47,7 @@ export class ServiceCheckComponent {
   ngOnInit() {
     this.calcularTotal(this.deuda);
     this.loadCompanyAccounts();
+    console.log(this.idCompany);
   }
 
   loadCompanyAccounts() {
@@ -70,36 +73,36 @@ export class ServiceCheckComponent {
   checkDebtAgainstBalance() {
     const accountBalance = parseFloat(this.dataSharingService.getAccountBalance()); // Convertir el saldo de la cuenta a número
     if (this.deuda > accountBalance) {
-      alert('SALDO INSUFICIENTE');
+      alert('SALDO INSUFICIENTE' + this.deuda);
     }
   }
 
-  // prepareTransactionData(): AccountTransactionDTO {
-  //   const transactionData: AccountTransactionDTO = {
-  //     accountId: '', // Placeholder: Obtener de la entrada del usuario o de la sesión
-  //     codeChannel: '0005', // Placeholder: Definir según la lógica de la aplicación
-  //     uniqueKey: '', // Placeholder: Generar un identificador único o obtener si ya existe
-  //     transactionType: 'DEB', // Placeholder: Definir según la lógica de la aplicación
-  //     transactionSubtype: 'WITHDRAWAL', // Placeholder: Definir según la lógica de la aplicación
-  //     reference: 'PAGO DE SERVICIO', // Placeholder: Obtener de la entrada del usuario o generar
-  //     amount: this.deuda, // Placeholder: Obtener de la entrada del usuario
-  //     creditorAccount: '', // Placeholder: Definir según la lógica de la aplicación
-  //     debitorAccount: '', // Placeholder: Obtener de la sesión o entrada del usuario
-  //   };
-  //   return transactionData;
-  // }
+  prepareTransactionData(): AccountTransactionDTO {
+    const transactionData: AccountTransactionDTO = {
+      accountId: this.idCompany, 
+      codeChannel: '0005', // Banca web 
+      uniqueKey: '', 
+      transactionType: 'DEB', 
+      transactionSubtype: 'WITHDRAWAL', 
+      reference: 'PAGO DE SERVICIO',
+      ammount: this.deuda, 
+      creditorAccount: '', 
+      debitorAccount: this.number, 
+    };
+    return transactionData;
+  }
 
-  // async onPayButtonClick() {
-  //   const transactionData = this.prepareTransactionData();
-  //   try {
-  //     await sendTransaction(transactionData);
-  //     // Navegar a service_successful si la transacción es exitosa
-  //     this.router.navigate(['service_successful']);
-  //   } catch (error) {
-  //     console.error('La transacción falló', error);
-  //     // Manejar el error, posiblemente mostrar un mensaje al usuario
-  //   }
-  // }
+  async onPayButtonClick() {
+    const transactionData = this.prepareTransactionData();
+    try {
+      await sendTransaction(transactionData);
+      // Navegar a service_successful si la transacción es exitosa
+      this.router.navigate(['service_successful']);
+    } catch (error) {
+      console.error('La transacción falló', error);
+      // Manejar el error, posiblemente mostrar un mensaje al usuario
+    }
+  }
 
   redirectToNext() {
     const accountBalance = parseFloat(this.dataSharingService.getAccountBalance()); // Convertir el saldo de la cuenta a número

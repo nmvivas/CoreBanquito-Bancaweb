@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ɵrestoreComponentResolutionQueue } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -49,6 +49,7 @@ export class ServiceValueComponent {
   }
   ngOnInit() {
     this.companyShareService.currentCompany.subscribe(company => {
+      console.log(company);
       this.company = company?.companyName;
       this.idCompany = company?.id;
       console.log(this.company);
@@ -71,14 +72,14 @@ export class ServiceValueComponent {
         // Almacenar los datos necesarios en el servicio compartido
         this.sharedDataService.setSharedData({
           companyName: this.company,
-          companyId: this.idCompany,
+          idCompany: this.idCompany,
           contrapartida: this.contrapartida,
           debtorName: this.debtorName,
           identificacion: this.identificacion,
           dueDate: this.dueDate,
           deuda: this.deuda,
         });
-        console.log(this.idCompany)
+        console.log(this.idCompany);
       } else {
         // Si no hay datos que coincidan con la contrapartida, muestra un alerta
         alert("Contrapartida no válida");
