@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment.development';
 
 })
 export class AuthenticationService {
-  private LOGIN_URL = environment.coreBankApiUrl + '/login';
+  private LOGIN_URL = environment.coreBankApiUrl + '/api/v1/auth/login';
 
   constructor(private http: HttpClient) { }
   login(userName: string, password: string): Observable<any> {

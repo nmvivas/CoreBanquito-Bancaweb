@@ -13,8 +13,8 @@ import { SessionService } from '../../services/session.Service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  userName: string = '';
-  password: string = '';
+  userName: string = 'cramirez';
+  password: string = 'cramirez123';
   errorMessage: string = '';
   primeraVisita = true;
   accesoValidacion = false;
