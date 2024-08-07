@@ -5,6 +5,7 @@ import { AccountService } from '../../services/account.service';
 import { DataSharingService } from '../../services/accountDetails.service';
 import { SessionService } from '../../services/session.Service';
 
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -13,7 +14,7 @@ import { SessionService } from '../../services/session.Service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  number = '';
+  codeInternalAccount = '';
   currentBalance = '';
   userName = '';
 
@@ -25,23 +26,26 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const email = this.sessionService.getEmail();
+    const email = "braulio@gmail.com"
     if (email) {
       this.clientService.getClientIdByEmail(email).subscribe({
         next: (clientData) => {
-          const clientId = clientData.id;
+          const clientId = clientData.uniqueId;
           console.log(clientId);
+          console.log(clientData.fullName);
+          this.dataSharingService.setUserName(clientData.fullName); 
           this.accountService.getAccountDetails(clientId).subscribe({
             next: (accountData) => {
-              console.log(accountData.number);
+              console.log(accountData.codeInternalAccount);
               console.log(accountData.availableBalance);
               this.currentBalance = accountData.availableBalance;
-              this.number = accountData.number;
-              this.dataSharingService.setAccountDetails(this.number, this.currentBalance);
+              this.codeInternalAccount = accountData.codeInternalAccount;
+              this.dataSharingService.setAccountDetails(this.codeInternalAccount, this.currentBalance);
 
               // Guardar los detalles de la cuenta en el almacenamiento local
-              localStorage.setItem('accountNumber', this.number);
+              localStorage.setItem('accountNumber', this.codeInternalAccount);
               localStorage.setItem('accountBalance', this.currentBalance);
+              
 
               console.log(this.dataSharingService.getAccountNumber());
             },

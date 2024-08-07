@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataSharingService {
+
+  private userNameSource = new BehaviorSubject<string>('');
+  currentUserName = this.userNameSource.asObservable();
+
   private accountNumber: string = '';
   private accountBalance: string = '';
   private transferenciaData = { monto: '', beneficiario: '', cuenta: '' };
@@ -24,6 +29,10 @@ export class DataSharingService {
     // Guardar en localStorage
     localStorage.setItem('accountNumber', number);
     localStorage.setItem('accountBalance', balance);
+  }
+
+  setUserName(userName: string) {
+    this.userNameSource.next(userName);
   }
 
   getAccountNumber(): string {

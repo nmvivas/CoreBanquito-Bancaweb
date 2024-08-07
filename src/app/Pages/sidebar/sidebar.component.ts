@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthenticationService } from '../../services/auth.service';
+import { DataSharingService } from '../../services/accountDetails.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,15 +19,13 @@ import { AuthenticationService } from '../../services/auth.service';
 })
 export class SidebarComponent implements OnInit {
 
-  accountNumber = '2205618154';
-  balance = '$ 330.30';
+ 
   userName: string = '';
-
   usuario: string = '';
   authenticationService: AuthenticationService;
   router: Router;
 
-  constructor(authenticationService: AuthenticationService, router: Router) {
+  constructor(authenticationService: AuthenticationService, router: Router , private datasharingService: DataSharingService) {
     this.authenticationService = authenticationService;
     this.router = router;
     this.dataSource.data = TREE_DATA;
@@ -34,6 +33,9 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.setUserNameFromLocalStorage();
+    this.datasharingService.currentUserName.subscribe(userName => {
+      this.userName = userName;
+    });
   }
 
   setUserNameFromLocalStorage() {

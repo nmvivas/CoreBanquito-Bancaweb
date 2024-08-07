@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment.development';
   providedIn: 'root'
 })
 export class ClientService {
-  private CLIENT_URL = environment.coreClientsApiUrl + '/client/email/';
+  private CLIENT_URL = environment.coreClientsApiUrl + '/clients/email/';
 
   constructor(private http: HttpClient) { }
 
@@ -24,6 +24,7 @@ export class ClientService {
   // }
 
   getClientIdByEmail(email: string): Observable<any> {
+    email = "braulio@gmail.com";
     return this.http.get(`${this.CLIENT_URL}${email}`).pipe(
       catchError(error => {
         console.error('Error fetching client by email:', error);
@@ -31,6 +32,21 @@ export class ClientService {
       })
     );
   }
+
+
+
+  // getClientIdByEmail(email: string): Observable<any> {
+  //   if (email === "braulio@gmail.com") {
+  //     return of({ clientId: "3" }); // Devuelve un objeto específico para el correo braulio@gmail.com
+  //   } else {
+  //     return this.http.get(`${this.CLIENT_URL}${email}`).pipe(
+  //       catchError(error => {
+  //         console.error('Error fetching client by email:', error);
+  //         return throwError(() => error);
+  //       })
+  //     );
+  //   }
+  // }
 
   async showClientByEmailInConsole(email: string): Promise<void> {
     this.getClientIdByEmail(email).pipe(

@@ -7,6 +7,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTreeModule } from '@angular/material/tree';
 import { Router, RouterOutlet } from '@angular/router';
 import { DataSharingService } from '../../services/accountDetails.service';
+import { AccountService } from '../../services/account.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tranferences',
@@ -32,7 +34,8 @@ export class TranferencesComponent implements OnInit {
   cuenta = '';
 
 
-  constructor(private dataSharingService: DataSharingService, private router: Router) { }
+  constructor(private dataSharingService: DataSharingService, private router: Router,     private accountService: AccountService, 
+  ) { }
 
   ngOnInit(): void {
     this.number = this.dataSharingService.getAccountNumber();
@@ -40,17 +43,31 @@ export class TranferencesComponent implements OnInit {
   }
 
   realizarTransferencia() {
-    this.dataSharingService.setTransferenciaData({
-      monto: this.monto,
-      beneficiario: this.beneficiario,
-      cuenta: this.cuenta
-      
-    });
-    localStorage.setItem('beneficiario', this.beneficiario);
-    localStorage.setItem('monto', this.monto);
-    console.log(this.monto);
-    localStorage.setItem('cuenta', this.cuenta);
-    this.router.navigate(['tranferences-pago']);
+    this.validarCuenta(this.cuenta).subscribe(
+     
+      (response) => {
+        if (response && response.valid) {
+          this.dataSharingService.setTransferenciaData({
+            monto: this.monto,
+            beneficiario: this.beneficiario,
+            cuenta: this.cuenta
+            
+          });
+          
+          localStorage.setItem('beneficiario', this.beneficiario);
+          localStorage.setItem('monto', this.monto);
+          console.log(this.monto);
+          localStorage.setItem('cuenta', this.cuenta);
+          this.router.navigate(['tranferences-pago']);
+        } else {
+          alert('CUENTA INVALIDA');
+        }
+        console.log(this.cuenta);
+      },
+      (error) => {
+        this.router.navigate(['tranferences-pago']);;
+      }
+    );
   }
   
 
@@ -70,8 +87,8 @@ export class TranferencesComponent implements OnInit {
     }
   }
 
-
-
-
+  validarCuenta(cuenta: string): Observable<any> {
+    return this.accountService.getAccountValidation(cuenta);
+  }
 }
 

@@ -12,14 +12,14 @@
             </div>
             <section class="form_transferencia">
                 <div class="account-info">
-                    <label for="monto"> Monto: </label> <br>
+                    <label for="monto" class="formLabel" > Monto: </label> <br>
                     <input id="monto" type="text" [(ngModel)]="monto" (ngModelChange)="validarSaldo()">
                     <br>
-                    <label for="beneficiario"> Beneficiario: </label> <br>
+                    <label for="beneficiario" class="formLabel" > Beneficiario: </label> <br>
                     <input id="beneficiario" type="text" [(ngModel)]="beneficiario">
                     <br>
-                    <label for="cuenta" [(ngModel)]="cuenta"> Numero de Cuenta: </label> <br>
-                    <input id="cuenta" type="text">
+                    <label for="cuenta" class="formLabel" [(ngModel)]="cuenta"> Numero de Cuenta: </label> <br>
+                    <input id="cuenta" type="text" maxlength="10">
                 </div>
             </section>
             <div class="footer">

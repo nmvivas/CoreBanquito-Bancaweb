@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment.development';
   providedIn: 'root'
 })
 export class CompanyService {
-  private COMPANY_URL = environment.coreCobrosReceivablesApiUrl + '/company';
+  private COMPANY_URL = environment.coreCobrosCompanyApiUrl + '/company';
 
   constructor(private http: HttpClient) { }
 

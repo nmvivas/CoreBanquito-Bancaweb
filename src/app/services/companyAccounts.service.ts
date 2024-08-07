@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment.development';
   providedIn: 'root'
 })
 export class CompanyAccountsService {
-  private COMPANY_ACCOUNT_URL = environment.coreCobrosReceivablesApiUrl + '/accounts/company';
+  private COMPANY_ACCOUNT_URL = environment.coreCobrosCompanyApiUrl + '/accounts/company';
 
   constructor(private http: HttpClient) { }
 

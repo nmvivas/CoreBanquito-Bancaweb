@@ -7,8 +7,8 @@ import { environment } from '../../environments/environment.development';
   providedIn: 'root'
 })
 export class ReceivablesService {
-  private COMPANY_URL: string = environment.coreCobrosReceivablesApiUrl + '/company/search';
-  private ORDER_URL: string = environment.coreCobrosReceivablesApiUrl + '/order-items';
+  private COMPANY_URL: string = environment.coreCobrosCompanyApiUrl + '/company/search';
+  private ORDER_URL: string = environment.coreCobrosCompanyApiUrl + '/order-items';
 
   constructor(private http: HttpClient) { }
 
